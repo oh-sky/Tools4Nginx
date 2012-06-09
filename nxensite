@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+define('CONFIGURE_FILE_DIR','/etc/nginx/sites-available/');
+define('CONFIGURE_SLINK_DIR','/etc/nginx/sites-enabled/');
+
+switch($argc)
+{
+  case 2:
+        if(file_exists(CONFIGURE_FILE_DIR . $argv[1]))
+        {
+                passthru('ln -s ' . CONFIGURE_FILE_DIR . $argv[1] .' '. CONFIGURE_SLINK_DIR . $argv[1]);
+                exit();
+        }
+  default:
+        exit("usage: {$argv[0]} SiteName\n");
+}
+?>

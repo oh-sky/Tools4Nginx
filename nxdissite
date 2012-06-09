@@ -1,0 +1,15 @@
+#!/usr/bin/php
+<?php
+define('CONFIGURE_SLINK_DIR','/etc/nginx/sites-enabled/');
+
+switch($argc)
+{
+  case 2:
+	if(is_link(CONFIGURE_SLINK_DIR . $argv[1]))
+	{
+		passthru('rm -f ' .  CONFIGURE_SLINK_DIR . $argv[1]);
+	}
+  default:
+	exit("usage: {$argv[0]} SiteName\n");
+}
+?>
