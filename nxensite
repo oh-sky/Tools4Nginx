@@ -1,17 +1,29 @@
 #!/usr/bin/php
 <?php
+//設定ファイル設置ディレクトリ
 define('CONFIGURE_FILE_DIR','/etc/nginx/sites-available/');
+//有効設定ファイルへのソフトリンク設置ディレクトリ
 define('CONFIGURE_SLINK_DIR','/etc/nginx/sites-enabled/');
 
 switch($argc)
 {
   case 2:
-        if(file_exists(CONFIGURE_FILE_DIR . $argv[1]))
-        {
-                passthru('ln -s ' . CONFIGURE_FILE_DIR . $argv[1] .' '. CONFIGURE_SLINK_DIR . $argv[1]);
-                exit();
-        }
+	$configure_file = CONFIGURE_FILE_DIR . $argv[1];
+	$configure_symlink = CONFIGURE_SLINK_DIR . $argv[1];
+	if(file_exists($configure_file))
+	{
+		if(file_exists($configure_symlink)){
+			echo "{$configure_symlink} already exists.\n";
+			exit();
+		}
+		passthru('ln -s ' . $configure_file .' '. $configure_symlink);
+		echo "Creating Symlink {$configure_symlink}\n";
+		exit();
+	}else{
+		echo "{$configure_file} doesn't exists.\n";
+		exit();
+	}
   default:
-        exit("usage: {$argv[0]} SiteName\n");
+	exit("usage: {$argv[0]} SiteName\n");
 }
 ?>

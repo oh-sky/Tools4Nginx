@@ -1,13 +1,20 @@
 #!/usr/bin/php
 <?php
+//有効設定ファイルへのソフトリンク設置ディレクトリ
 define('CONFIGURE_SLINK_DIR','/etc/nginx/sites-enabled/');
 
 switch($argc)
 {
   case 2:
-	if(is_link(CONFIGURE_SLINK_DIR . $argv[1]))
+	$configure_symlink = CONFIGURE_SLINK_DIR . $argv[1];
+	if(is_link($configure_symlink))
 	{
-		passthru('rm -f ' .  CONFIGURE_SLINK_DIR . $argv[1]);
+		passthru('rm -f ' .  $configure_symlink);
+		echo "Removing Symlink {$configure_symlink}\n";
+		exit();
+	}else{
+		echo "{$configure_symlink} doesn't exists.\n";
+		exit();
 	}
   default:
 	exit("usage: {$argv[0]} SiteName\n");
